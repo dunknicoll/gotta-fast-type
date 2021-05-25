@@ -43,19 +43,29 @@
 	}
 </script>
 
-<h1>
+<h1>Gotta Type Fast</h1>
+
+<div class="sentence">
 	{#each words as wordItem, index}
-	<span 
+	<span
+				class="word"
 				class:highlight={index === wordPointer}
 				class:good={wordItem.result === 1}
 				class:bad={wordItem.result === -1}>{wordItem.word}</span>
-	<span></span>
 	{/each}
-</h1>
+</div>
 
 <input on:keypress={onKeyPress} bind:value={currentValue}>
 
 <style>
+	.sentence {
+		font-size: 25px;
+		margin-bottom: 20px;
+	}
+	.word {
+		display: inline-block;
+		margin-right: 0.25em;
+	}
 	.highlight {
 		background: lightgrey;
 	}
