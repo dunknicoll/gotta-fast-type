@@ -43,6 +43,7 @@ export default {
   },
   plugins: [
     replace({
+      preventAssignment: true,
       process: JSON.stringify({
         env: {
           BUILD_ID: process.env.BUILD_ID || "local-dev",
