@@ -19,6 +19,8 @@
   }));
   $: duration = finished ? endTime - startTime : 0;
 
+  let buildId = process.env.BUILD_ID;
+
   let wordPointer = 0;
   let currentValue = "";
   let minute = 60000;
@@ -123,3 +125,5 @@
 {/if}
 
 <input on:keypress={onKeyPress} bind:value={currentValue} />
+
+<div class="text-gray-300 text-center text-xs">{buildId}</div>
