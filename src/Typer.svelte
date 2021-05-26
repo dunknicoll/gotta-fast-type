@@ -1,10 +1,10 @@
 <script>
-  let sentences = ["saw", "are", "different"];
-  //   let sentences = [
-  //   "saw also go does over have left went below almost the which word him right here his out of away only only day add went up we take must never like are number should found",
-  //   "are would saw word about own place which more will more those does behind give go one too look never said down here had small to so the had has your how different one every",
-  //   "different back two air only some my had way must number around become has my most who so thought but he number together animal to along work away each make he it now any large"
-  // ];
+  // let sentences = ["saw", "are", "different"];
+  let sentences = [
+    "saw also go does over have left went below almost the which word him right here his out of away only only day add went up we take must never like are number should found",
+    "are would saw word about own place which more will more those does behind give go one too look never said down here had small to so the had has your how different one every",
+    "different back two air only some my had way must number around become has my most who so thought but he number together animal to along work away each make he it now any large"
+  ];
   let debug = false;
   let sentencePointer = 0;
   let startTime = 0;
