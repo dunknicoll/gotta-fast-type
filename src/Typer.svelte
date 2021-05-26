@@ -104,6 +104,8 @@
     </div>
   {/if}
 
+  <span class="bg-gray-200 text-green-500 text-red-500" />
+
   {#if !finished}
     <div class="mb-6 text-2xl w-6/12">
       {#each words as wordItem, index}
