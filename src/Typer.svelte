@@ -5,6 +5,7 @@
     "are would saw word about own place which more will more those does behind give go one too look never said down here had small to so the had has your how different one every",
     "different back two air only some my had way must number around become has my most who so thought but he number together animal to along work away each make he it now any large"
   ];
+  let typedWords = [];
   let debug = false;
   let sentencePointer = 0;
   let startTime = 0;
@@ -12,7 +13,11 @@
   let win = 0;
   let lose = 0;
   let finished = false;
-  let totalScore = sentences.map(s => s.split(" ")).flat().length;
+  let totalWords = sentences.map(s => s.split(" ")).flat().length;
+  $: grossWPM = finished
+    ? typedWords.join().length / 5 / (duration / minute)
+    : 0;
+  $: netWPM = finished ? grossWPM - lose / (duration / minute) : 0;
   $: sentence = sentences[sentencePointer];
   $: words = sentence.split(" ").map(word => ({
     word,
@@ -41,7 +46,7 @@
           words[wordPointer].result = -1;
           lose += 1;
         }
-
+        typedWords = [...typedWords, currentValue];
         wordPointer++;
       } else {
         if (sentencePointer < sentences.length - 1) {
@@ -53,6 +58,7 @@
             lose += 1;
           }
 
+          typedWords = [...typedWords, currentValue];
           sentencePointer++;
           wordPointer = 0;
         } else {
@@ -64,6 +70,7 @@
               words[wordPointer].result = -1;
               lose += 1;
             }
+            typedWords = [...typedWords, currentValue];
             endTime = Date.now();
             finished = true;
             console.log("finished");
@@ -86,20 +93,23 @@
     <h4>Duration: {duration}</h4>
     <h4>Won: {win}</h4>
   {/if}
-
   {#if finished}
     <div class="mb-6 text-2xl w-6/12">
       <div>
         <span class="font-bold">Correct:</span>
-        {win}/{totalScore}
+        {win}/{totalWords}
       </div>
       <div>
         <span class="font-bold">Mistakes:</span>
         {lose}
       </div>
       <div>
-        <span class="font-bold">WPM:</span>
-        {Math.floor((minute / duration) * win)}
+        <span class="font-bold">Gross WPM:</span>
+        {Math.round(grossWPM)}
+      </div>
+      <div>
+        <span class="font-bold">Net WPM:</span>
+        {Math.round(netWPM)}
       </div>
     </div>
   {/if}
