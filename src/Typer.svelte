@@ -123,6 +123,6 @@
       bind:value={currentValue} />
   {/if}
 
-  <div class="text-gray-300 text-xs mt-6">{buildId}</div>
+  <div class="text-gray-300 text-xs mt-6">build: {buildId}</div>
 
 </main>
