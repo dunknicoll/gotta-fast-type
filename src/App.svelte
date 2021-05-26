@@ -1,78 +1,125 @@
 <script>
-	let sentences = [
-		'saw also go does over have left went below almost the which word him right here his out of away only only day add went up we take must never like are number should found',
-		'are would saw word about own place which more will more those does behind give go one too look never said down here had small to so the had has your how different one every',
-		'different back two air only some my had way must number around become has my most who so thought but he number together animal to along work away each make he it now any large'
-	];
-	let sentencePointer = 0;
-	$: sentence = sentences[sentencePointer];
-	$: words = sentence.split(' ').map(word => ({
-		word,
-		result: 0
-	}));
-	
-	let wordPointer = 0;
-	let currentValue = "";
-	
-	let onKeyPress = (e) => {
-		if(e.code === "Space" || e.code === "Enter") {
-			e.preventDefault();
-		
-			if(wordPointer < words.length - 1) {
-				if(currentValue === words[wordPointer].word) {
-					words[wordPointer].result = 1;
-				} else {
-					words[wordPointer].result = -1;
-				}
-				
-				wordPointer++;
-			} else {				
-				if(sentencePointer < sentences.length) {
-					if(currentValue === words[wordPointer].word) {
-						words[wordPointer].result = 1;
-					} else {
-						words[wordPointer].result = -1;
-					}
-					
-					sentencePointer++;
-					wordPointer = 0;
-				}
-			}
-			currentValue = "";
-		}
-	}
+  let sentences = [
+    "saw also go does over have left went below almost the which word him right here his out of away only only day add went up we take must never like are number should found",
+    "are would saw word about own place which more will more those does behind give go one too look never said down here had small to so the had has your how different one every",
+    "different back two air only some my had way must number around become has my most who so thought but he number together animal to along work away each make he it now any large"
+  ];
+  let debug = false;
+  let sentencePointer = 0;
+  let startTime = 0;
+  let endTime = 0;
+  let win = 0;
+  let lose = 0;
+  let finished = false;
+  let totalScore = sentences.map(s => s.split(" ")).flat().length;
+  $: sentence = sentences[sentencePointer];
+  $: words = sentence.split(" ").map(word => ({
+    word,
+    result: 0
+  }));
+  $: duration = finished ? endTime - startTime : 0;
+
+  let wordPointer = 0;
+  let currentValue = "";
+  let minute = 60000;
+
+  let onKeyPress = e => {
+    if (!startTime) {
+      startTime = Date.now();
+    }
+    if (e.code === "Space" || e.code === "Enter") {
+      e.preventDefault();
+
+      if (wordPointer < words.length - 1) {
+        if (currentValue === words[wordPointer].word) {
+          words[wordPointer].result = 1;
+          win += 1;
+        } else {
+          words[wordPointer].result = -1;
+          lose += 1;
+        }
+
+        wordPointer++;
+      } else {
+        if (sentencePointer < sentences.length - 1) {
+          if (currentValue === words[wordPointer].word) {
+            words[wordPointer].result = 1;
+            win += 1;
+          } else {
+            words[wordPointer].result = -1;
+            lose += 1;
+          }
+
+          sentencePointer++;
+          wordPointer = 0;
+        } else {
+          if (!finished) {
+            if (currentValue === words[wordPointer].word) {
+              words[wordPointer].result = 1;
+              win += 1;
+            } else {
+              words[wordPointer].result = -1;
+              lose += 1;
+            }
+            endTime = Date.now();
+            finished = true;
+            console.log("finished");
+          }
+        }
+      }
+      currentValue = "";
+    }
+  };
 </script>
+
+<style>
+  .sentence {
+    font-size: 25px;
+    margin-bottom: 20px;
+  }
+  .word {
+    display: inline-block;
+    margin-right: 0.25em;
+  }
+  .highlight {
+    background: lightgrey;
+  }
+  .good {
+    color: green;
+  }
+  .bad {
+    color: red;
+  }
+</style>
 
 <h1>Gotta Type Fast</h1>
 
-<div class="sentence">
-	{#each words as wordItem, index}
-	<span
-				class="word"
-				class:highlight={index === wordPointer}
-				class:good={wordItem.result === 1}
-				class:bad={wordItem.result === -1}>{wordItem.word}</span>
-	{/each}
-</div>
+{#if debug}
+  <h4>Start: {startTime}</h4>
+  <h4>End: {endTime}</h4>
+  <h4>Minute: {minute}</h4>
+  <h4>Duration: {duration}</h4>
+  <h4>Won: {win}</h4>
+{/if}
 
-<input on:keypress={onKeyPress} bind:value={currentValue}>
+{#if finished}
+  <h2>{win}/{totalScore}</h2>
+  <h2>{lose} errors</h2>
+  <h2>WPM: {Math.floor((minute / duration) * win)}</h2>
+{/if}
 
-<style>
-	.sentence {
-		font-size: 25px;
-		margin-bottom: 20px;
-	}
-	.word {
-		display: inline-block;
-		margin-right: 0.25em;
-	}
-	.highlight {
-		background: lightgrey;
-	}
-	.good {
-		color: green;
-	}
-	.bad {
-		color: red;
-	}
-</style>
+{#if !finished}
+  <div class="sentence">
+    {#each words as wordItem, index}
+      <span
+        class="word"
+        class:highlight={index === wordPointer}
+        class:good={wordItem.result === 1}
+        class:bad={wordItem.result === -1}>
+        {wordItem.word}
+      </span>
+    {/each}
+  </div>
+{/if}
+
+<input on:keypress={onKeyPress} bind:value={currentValue} />
