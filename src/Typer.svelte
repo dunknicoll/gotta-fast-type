@@ -159,7 +159,7 @@
       </div>
       <div>
         <span class="font-bold">Accuracy:</span>
-        {Number.parseFloat((characterScore / totalCharacters) * 100).toFixed(2)}
+        {Number.parseFloat((characterScore / totalCharacters) * 100).toFixed(2)}&percnt;
       </div>
     </div>
   {/if}
