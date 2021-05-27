@@ -25,7 +25,9 @@
   $: grossWPM = finished
     ? typedWords.join().length / 5 / (duration / minute)
     : 0;
-  $: netWPM = finished ? (grossWPM - totalErrors) / (duration / minute) : 0;
+  $: netWPM = finished
+    ? (typedWords.join().length / 5 - totalErrors) / (duration / minute)
+    : 0;
   $: sentence = sentences[sentencePointer];
   $: words = sentence.split(" ").map(word => ({
     word,
