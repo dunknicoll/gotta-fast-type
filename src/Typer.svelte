@@ -72,7 +72,7 @@
 
     totalCharacters += accuracyErrors;
     characterScore += typedScore;
-    totalErrors += accuracyErrors;
+    totalErrors += submittedErrors;
 
     if (!submittedErrors) {
       words[wordPointer].result = 1;
