@@ -13,6 +13,7 @@
   let endTime = 0;
   let win = 0;
   let lose = 0;
+  let totalErrors = 0;
   let characterScore = 0;
   let finished = false;
   let totalWords = sentences.map(s => s.split(" ")).flat().length;
@@ -24,7 +25,7 @@
   $: grossWPM = finished
     ? typedWords.join().length / 5 / (duration / minute)
     : 0;
-  $: netWPM = finished ? grossWPM - lose / (duration / minute) : 0;
+  $: netWPM = finished ? (grossWPM - totalErrors) / (duration / minute) : 0;
   $: sentence = sentences[sentencePointer];
   $: words = sentence.split(" ").map(word => ({
     word,
@@ -69,6 +70,7 @@
 
     totalCharacters += accuracyErrors;
     characterScore += typedScore;
+    totalErrors += accuracyErrors;
 
     if (!submittedErrors) {
       words[wordPointer].result = 1;
