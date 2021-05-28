@@ -197,6 +197,7 @@
       use:focusMe />
   {/if}
 
-  <div class="text-gray-300 text-xs mt-6">build: {buildId}</div>
+  <div class="text-gray-300 text-xs mt-6">by <a target="_blank" href="https://www.twitter.com/dunknicoll">dunknicoll</a> - build: {buildId}</div>
+
 
 </main>
