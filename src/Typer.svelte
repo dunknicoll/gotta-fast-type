@@ -42,6 +42,10 @@
   let typedCharacters = "";
   let minute = 60000;
 
+  const focusMe = (el) => {
+    el.focus()
+  }
+
   const addScores = (acc, curr) => acc + curr;
 
   const sumScoreByProp = (results, prop) =>
@@ -131,7 +135,9 @@
 
 <main class="px-10 pt-10 pb-4 text-gray-700 rounded-xl">
 
-  <h1 class="text-3xl font-bold mb-6">Gotta Type Fast</h1>
+  <h1 class="text-3xl font-bold mb-2">Gotta Type Fast</h1>
+
+  <p class="mb-4 text-gray-500">Start typing! Space or enter moves onto the next word!</p>
 
   {#if debug}
     <h4>Start: {startTime}</h4>
@@ -146,11 +152,11 @@
   {#if finished}
     <div class="mb-6 text-2xl w-6/12">
       <div>
-        <span class="font-bold">Correct:</span>
+        <span class="font-bold">Correct Words:</span>
         {win}/{totalWords}
       </div>
       <div>
-        <span class="font-bold">Errors:</span>
+        <span class="font-bold">Number of Mistakes:</span>
         {lose}
       </div>
       <div>
@@ -171,6 +177,7 @@
   <span class="bg-gray-200 text-green-500 text-red-500" />
 
   {#if !finished}
+    <div class="text-xl font-bold mb-2">{sentencePointer+1}/{sentences.length}</div>
     <div class="mb-6 text-2xl w-6/12">
       {#each words as wordItem, index}
         <span
@@ -186,7 +193,8 @@
     <input
       class="border-2 text-xl p-2"
       on:keypress={onKeyPress}
-      bind:value={submittedText} />
+      bind:value={submittedText}
+      use:focusMe />
   {/if}
 
   <div class="text-gray-300 text-xs mt-6">build: {buildId}</div>
